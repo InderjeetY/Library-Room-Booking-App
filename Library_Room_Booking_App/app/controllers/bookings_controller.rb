@@ -8,7 +8,9 @@ class BookingsController < ApplicationController
   end
 
   def find_rooms
-    params[:from_time]
+    if Booking.valid_dates(params[:from_time, params[:to_time]])
+      @rooms = Booking.get_rooms(params[:building], params[:from_to], params[:to_time])
+    end
   end
 
   def index
