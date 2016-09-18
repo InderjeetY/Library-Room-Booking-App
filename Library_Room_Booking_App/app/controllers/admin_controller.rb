@@ -13,13 +13,19 @@ class AdminController < ApplicationController
   end
 
   def member_page
+    @user = User.find_by(email_id: session[:email_id])
   end
 
   def admin_page
-  end
+    @user = User.find_by(email_id: session[:email_id])
+end
 
   def create_room
     redirect_to '/rooms/new'
+  end
+
+  def show_all
+    redirect_to '/rooms'
   end
 
   def sign_out
