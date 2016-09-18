@@ -7,6 +7,12 @@ class RoomsController < ApplicationController
     @rooms = Room.all
   end
 
+  def room_schedule
+    @room_detail = Room.find(params[:id])
+    @booking_detail = Booking.get_user_booking(room_id: params[:id])
+  end
+
+
   # GET /rooms/1
   # GET /rooms/1.json
   def show
