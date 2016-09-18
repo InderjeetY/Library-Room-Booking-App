@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  skip_before_action :authorize, only: [:new, :create, :sign_up]
+  skip_before_action :authorize, only: [:new, :create, :sign_up_member]
 
   # GET /users
   # GET /users.json
@@ -13,7 +13,13 @@ class UsersController < ApplicationController
   def show
   end
 
-  def sign_up
+  def sign_up_member
+    session[:user_type] = 'member'
+    redirect_to '/users/new'
+  end
+
+  def sign_up_admin
+    session[:user_type] = 'admin'
     redirect_to '/users/new'
   end
 
@@ -33,7 +39,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-
+    @user.user_type = session[:user_type]
     respond_to do |format|
       if @user.save
         format.html { redirect_to users_url, notice: 'User was successfully created.' }
