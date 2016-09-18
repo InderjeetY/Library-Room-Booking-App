@@ -29,6 +29,7 @@ class BookingsController < ApplicationController
   def edit
   end
 
+
   # POST /bookings
   # POST /bookings.json
   def create
