@@ -8,6 +8,5 @@ class User < ApplicationRecord
   validates :name, :presence => true
   validates :email_id, :presence => true, :format => EMAIL_REGEX, :uniqueness => true
   validates :password, :presence => true
-  validates :user_type, :presence => true
 
 end
