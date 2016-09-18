@@ -1,5 +1,5 @@
 class Room < ApplicationRecord
-  belongs_to :booking
+  has_many :bookings
 
   validates :room_no, :presence => true
   validates :building, :presence => true

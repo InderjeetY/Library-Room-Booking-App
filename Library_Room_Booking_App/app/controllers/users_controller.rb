@@ -27,7 +27,6 @@ class UsersController < ApplicationController
   end
 
   def edit_personal_details
-
   end
 
   # POST /users
@@ -49,10 +48,10 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    if User.find_by(email_id: session[:email_id]).id.to_s == User.find_by(email_id: params[:email_id])
+    if (User.find_by(email_id: user_params[:email_id]))[:id].to_s == (User.find_by(email_id: session[:email_id]))[:id].to_s
       respond_to do |format|
         if @user.update(user_params)
-          format.html { redirect_to users_url, notice: 'User was successfully updated.' }
+          format.html { redirect_to '/admin/index', notice: 'User was successfully updated.' }
           format.json { render :show, status: :ok, location: @user }
         else
           format.html { render :edit }
