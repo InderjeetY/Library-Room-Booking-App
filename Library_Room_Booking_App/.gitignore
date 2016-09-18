@@ -22,5 +22,5 @@
 .xml
 .iml
 .idea/
-config/
-Gemfile.lock
+#config/
+#Gemfile.lock
