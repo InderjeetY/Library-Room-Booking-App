@@ -5,6 +5,10 @@
 <% end %>
 <%= form_tag action: 'create_room' do %>
     <%= submit_tag 'Create a Room' %>
+    <% end %>
+<%= form_tag action: 'show_all' do %>
+    <%= submit_tag 'Show all rooms' %>
+    <% end %>
 <% end %>
 <%= form_tag action: 'sign_out' do %>
     <%= submit_tag 'Log Out' %>
