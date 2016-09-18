@@ -1,18 +1,27 @@
 class AdminController < ApplicationController
   def index
-    if session[:user_type] == 'member'
-      @user = User.find_by(email_id: session[:email_id])
-      if @user
-        render '/admin/member'
-      else
-        redirect_to '/sessions/destroy'
-      end
+    @user = User.find_by(email_id: session[:email_id])
+    if @user
+       if session[:user_type] == 'member'
+        redirect_to '/admin/member_page'
+       elsif session[:user_type] == 'admin' || session[:user_type] == 'sadmin'
+         redirect_to '/admin/admin_page'
+       end
     else
-      redirect_to '/sessions/destroy'
+         redirect_to '/sessions/destroy'
     end
   end
-  def member
+
+  def member_page
   end
+
+  def admin_page
+  end
+
+  def create_room
+    redirect_to '/rooms/new'
+  end
+
   def sign_out
     redirect_to '/sessions/destroy'
   end
