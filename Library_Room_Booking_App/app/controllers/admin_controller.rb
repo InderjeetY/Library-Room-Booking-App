@@ -28,6 +28,15 @@ end
     redirect_to '/rooms'
   end
 
+  def admin_new
+    redirect_to '/users/sign_up_admin'
+  end
+
+  def show_all_admin
+    redirect_to '/users/show_admins'
+  end
+
+
   def sign_out
     redirect_to '/sessions/destroy'
   end
