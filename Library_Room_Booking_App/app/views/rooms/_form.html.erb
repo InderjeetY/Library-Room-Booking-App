@@ -1,32 +1,32 @@
 <%= form_for(room) do |f| %>
-  <% if room.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(room.errors.count, "error") %> prohibited this room from being saved:</h2>
+    <% if room.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(room.errors.count, "error") %> prohibited this room from being saved:</h2>
 
-      <ul>
-      <% room.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+          <ul>
+            <% room.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :room_no %>
+      <%= f.text_field :room_no %>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :room_no %>
-    <%= f.text_field :room_no %>
-  </div>
+    <div class="field">
+      <%= f.label :building %>
+      <%= f.select :building, [['D.H. Hill','D.H. Hill'],['James B. Hunt','James B. Hunt']]%>
+    </div>
 
-  <div class="field">
-    <%= f.label :building %>
-    <%= f.text_field :building %>
-  </div>
+    <div class="field">
+      <%= f.label :size %>
+      <%= f.select :size, [['Small - 4 chairs',4],['Medium - 6 chairs',6],['Large - 12 chairs',12]]%>
+    </div>
 
-  <div class="field">
-    <%= f.label :size %>
-    <%= f.number_field :size %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
 <% end %>

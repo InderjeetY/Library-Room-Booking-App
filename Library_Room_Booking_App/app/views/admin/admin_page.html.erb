@@ -1,0 +1,14 @@
+<h1>Welcome <%=  @user.name%></h1>
+<p id="notice"><%= notice %></p>
+<%= form_tag action: 'edit_user_details' do %>
+    <%= submit_tag 'Update Details' %>
+<% end %>
+<%= form_tag action: 'create_room' do %>
+    <%= submit_tag 'Create a Room' %>
+    <% end %>
+<%= form_tag action: 'show_all' do %>
+    <%= submit_tag 'Show all rooms' %>
+    <% end %>
+<%= form_tag action: 'sign_out' do %>
+    <%= submit_tag 'Log Out' %>
+<% end %>
