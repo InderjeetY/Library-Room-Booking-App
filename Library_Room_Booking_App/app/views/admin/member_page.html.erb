@@ -1,4 +1,4 @@
-<h1>Welcome <%=  @user.name%></h1>
+<h1>Welcome <!--%=  @user.name%--></h1>
 <p id="notice"><%= notice %></p>
 <%= form_tag action: 'edit_user_details' do %>
     <%= submit_tag 'Update Details' %>
