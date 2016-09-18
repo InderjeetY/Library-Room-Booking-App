@@ -42,7 +42,7 @@ class UsersController < ApplicationController
     @user.user_type = session[:user_type]
     respond_to do |format|
       if @user.save
-        format.html { redirect_to users_url, notice: 'User was successfully created.' }
+        format.html { redirect_to '/sessions/destroy', notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
