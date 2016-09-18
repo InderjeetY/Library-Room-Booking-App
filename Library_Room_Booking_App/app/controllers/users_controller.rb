@@ -13,6 +13,11 @@ class UsersController < ApplicationController
   def show
   end
 
+  def show_admins
+    @admins = User.find_by(user_type: 'admin')
+    @sadmin = User.find_by(user_type: 'sadmin')
+  end
+
   def sign_up_member
     session[:user_type] = 'member'
     redirect_to '/users/new'
