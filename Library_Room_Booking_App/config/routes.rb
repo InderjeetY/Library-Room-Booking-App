@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   #get 'sessions/create'
   #get 'sessions/new'
 
-  post 'users/sign_up'
+  post 'users/sign_up_member'
   post 'admin/sign_out'
   post 'admin/edit_user_details'
 
