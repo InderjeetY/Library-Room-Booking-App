@@ -3,6 +3,14 @@ class BookingsController < ApplicationController
 
   # GET /bookings
   # GET /bookings.json
+
+  def book_room
+  end
+
+  def find_rooms
+    params[:from_time]
+  end
+
   def index
     @bookings = Booking.all
   end
