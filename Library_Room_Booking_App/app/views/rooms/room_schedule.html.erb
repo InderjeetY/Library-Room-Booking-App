@@ -1,14 +1,30 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Room no:</strong>
-  <%= @room.room_no %>
-</p>
+<h1>Schedule of Room No. <%= @room_detail.room_no %> at <%= @room_detail.building %></h1>
 
-<p>
-  <strong>Username:</strong>
-  <%= @room.building %>
-</p>
+<table>
+  <thead>
+  <tr>
 
+    <th>User Name</th>
+    <th>From</th>
+    <th>To</th>
+  </tr>
+  </thead>
 
-<%= link_to 'Back', rooms_path %>
+  <tbody>
+  <% @booking_detail.each do |booking| %>
+      <tr>
+        <td><%= booking.name %></td>
+        <td><%= booking.from_time %></td>
+        <td><%= booking.to_time %></td>
+        <% if booking.from_time > Time.now.to_datetime %>
+            <td><%= link_to 'Edit', edit_booking_path(booking) %></td>
+            <td><%= link_to 'Destroy', booking.id.to_s, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>

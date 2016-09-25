@@ -1,8 +1,19 @@
 <h1>Welcome <!--%=  @user.name%--></h1>
+
 <p id="notice"><%= notice %></p>
+
 <%= form_tag action: 'edit_user_details' do %>
     <%= submit_tag 'Update Details' %>
 <% end %>
+
+<%= form_tag controller: 'bookings' ,action: 'search_room' do %>
+    <%= submit_tag 'Book a Room' %>
+<% end %>
+
+<%= form_tag controller: 'bookings' ,action: 'my_bookings' do %>
+    <%= submit_tag 'My Bookings' %>
+<% end %>
+
 <%= form_tag action: 'sign_out' do %>
     <%= submit_tag 'Log Out' %>
 <% end %>

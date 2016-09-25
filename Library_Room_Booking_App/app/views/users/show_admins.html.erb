@@ -18,7 +18,9 @@
         <td><%= admin.name %></td>
         <td><%= admin.email_id %></td>
         <td><%= admin.user_type %></td>
-        <td><%= if admin.email_id != session[:email_id] link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if admin.email_id != session[:email_id] %>
+          <td><%=  link_to 'Destroy', admin, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
     </tr>
     <% end %>
     <tr>

@@ -18,24 +18,32 @@ class AdminController < ApplicationController
 
   def admin_page
     @user = User.find_by(email_id: session[:email_id])
-end
+  end
 
   def create_room
     redirect_to '/rooms/new'
   end
 
-  def show_all
+  def show_all_rooms
     redirect_to '/rooms'
   end
 
-  def admin_new
+  def find_rooms
+    redirect_to '/bookings/search_rooms'
+  end
+
+  "def admin_new
+    #render controller: 'users', action: 'sign_up_admin'
     redirect_to '/users/sign_up_admin'
   end
 
   def show_all_admin
     redirect_to '/users/show_admins'
-  end
+  end"
 
+  def show_my_bookings
+    redirect_to '/bookings/my_bookings'
+  end
 
   def sign_out
     redirect_to '/sessions/destroy'

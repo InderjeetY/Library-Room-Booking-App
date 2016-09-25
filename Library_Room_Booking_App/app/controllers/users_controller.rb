@@ -14,17 +14,21 @@ class UsersController < ApplicationController
   end
 
   def show_admins
-    @admins = User.find_by(user_type: 'admin')
+    @admins = User.where(user_type: 'admin')
     @sadmin = User.find_by(user_type: 'sadmin')
   end
 
+  def show_members
+    @members = User.where(user_type: 'member')
+  end
+
   def sign_up_member
-    session[:user_type] = 'member'
+    session[:user_type_] = 'member'
     redirect_to '/users/new'
   end
 
   def sign_up_admin
-    session[:user_type] = 'admin'
+    session[:user_type_] = 'admin'
     redirect_to '/users/new'
   end
 
@@ -44,11 +48,16 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-    @user.user_type = session[:user_type]
+    @user.user_type = session[:user_type_]
     respond_to do |format|
       if @user.save
-        format.html { redirect_to '/sessions/destroy', notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+        if  @user.user_type == 'admin'
+          format.html { redirect_to '/admin/index', notice: 'User was successfully created.' }
+          format.json { render :show, status: :created, location: @user }
+        else
+          format.html { redirect_to '/sessions/destroy', notice: 'User was successfully created.' }
+          format.json { render :show, status: :created, location: @user }
+        end
       else
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
@@ -70,7 +79,7 @@ class UsersController < ApplicationController
         end
       end
     else
-      redirect_to '/sessions/destroy', alert:'Cannot change other peoples details.'
+      redirect_to '/sessions/destroy', notice:'Cannot change other peoples details.'
     end
   end
 
@@ -79,7 +88,8 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      #if session[:user_type] == 'admin' || session[:user_type] == 'sadmin'
+      format.html { redirect_to '/admin/index', notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

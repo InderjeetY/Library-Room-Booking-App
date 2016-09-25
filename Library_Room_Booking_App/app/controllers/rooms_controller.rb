@@ -9,9 +9,12 @@ class RoomsController < ApplicationController
 
   def room_schedule
     @room_detail = Room.find(params[:id])
-    @booking_detail = Booking.get_user_booking(room_id: params[:id])
+    #@booking_detail = Booking.where(room_id: params[:id])
+    #@booking_detail = Booking.all(:conditions => ["room_id = ?", params[:id]])
+    #@booking_detail = get_user_bookings(params[:id])
+    #@booking_detail = Room.get_all_booking_room(params[:id])
+    @booking_detail = User.select('*').joins(:bookings).where('bookings.room_id = ?',params[:id])
   end
-
 
   # GET /rooms/1
   # GET /rooms/1.json
@@ -31,10 +34,11 @@ class RoomsController < ApplicationController
   # POST /rooms.json
   def create
     @room = Room.new(room_params)
-
+    Rails.logger.info(@room.errors.inspect)
     respond_to do |format|
       if @room.save
-        format.html { redirect_to @room, notice: 'Room was successfully created.' }
+        Rails.logger.info(@room.errors.inspect)
+        format.html { redirect_to '/admin/index', notice: 'Room was successfully created.' }
         format.json { render :show, status: :created, location: @room }
       else
         format.html { render :new }
