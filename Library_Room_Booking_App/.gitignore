@@ -17,11 +17,7 @@
 .byebug_history
 /.Idea/*
 /.idea.zip
-.idea
 .yml
 .xml
 .iml
 .idea/
-config/
-Gemfile.lock
-.gitignore
