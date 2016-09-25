@@ -33,14 +33,18 @@ class BookingsController < ApplicationController
   end"
 
   def rooms_available
-    from_time = params[:Date].to_datetime + Time.parse(params[:from_hour_time].to_s + ':' + params[:from_minute_time].to_s).seconds_since_midnight.seconds
-    to_time = params[:Date].to_datetime + Time.parse(params[:to_hour_time].to_s + ':' + params[:to_minute_time].to_s).seconds_since_midnight.seconds
+    #from_time = params[:Date].to_datetime + Time.parse(params[:from_hour_time].to_s + ':' + params[:from_minute_time].to_s).seconds_since_midnight.seconds
+    #to_time = params[:Date].to_datetime + Time.parse(params[:to_hour_time].to_s + ':' + params[:to_minute_time].to_s).seconds_since_midnight.seconds
+    t1 = params[:Date].to_datetime
+    t2 = Time.now.to_datetime
+    from_time = DateTime.new(t1.year,t1.month,t1.day, params[:from_hour_time].to_i, params[:from_minute_time].to_i, 0, t2.zone)
+    to_time = DateTime.new(t1.year,t1.month,t1.day, params[:to_hour_time].to_i, params[:to_minute_time].to_i, 0, t2.zone)
     @rooms = Booking.get_rooms(params[:building], from_time, to_time)
     if @rooms
       session[:from_time] = from_time
       session[:to_time] = to_time
     else
-      redirect_to '/admin/index', notice: from_time.to_s + ', ' + to_time.to_s + ', ' + Time.now.to_datetime.to_s
+        redirect_to '/admin/index', notice: 'Rooms were not available for your search'
     end
   end
 
@@ -131,7 +135,7 @@ class BookingsController < ApplicationController
   def destroy
     @booking.destroy
     respond_to do |format|
-      format.html { redirect_to bookings_url, notice: 'Booking was successfully destroyed.' }
+      format.html { redirect_to '/admins/index', notice: 'Booking was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
