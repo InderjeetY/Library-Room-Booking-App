@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Rooms</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Room no</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @rooms.each do |room| %>
+      <tr>
+        <td><%= room.room_no %></td>
+        <td><%= link_to 'Book', {:controller => 'bookings', :action => 'new', :id => room.id} %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+<%= link_to 'New Room', new_room_path %>

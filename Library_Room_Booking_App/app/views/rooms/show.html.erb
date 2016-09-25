@@ -1,28 +1,19 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Rooms</h1>
+<p>
+  <strong>Room No:</strong>
+  <%= @room.room_no %>
+</p>
 
-<table>
-  <thead>
-  <tr>
+<p>
+  <strong>Building:</strong>
+  <%= @room.building %>
+</p>
 
-    <th>User Name</th>
-    <th>From</th>
-    <th>To</th>
-  </tr>
-  </thead>
+<p>
+  <strong>Size</strong>
+  <%= @room.size %>
+</p>
 
-  <tbody>
-  <% @booking_detail.each do |booking| %>
-      <tr>
-        <td><%= booking.user_name %></td>
-        <td><%= booking.from %></td>
-        <td><%= booking.to %></td>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Room', new_room_path %>
+<%= link_to 'Edit', edit_room_path(@room) %> |
+<%= link_to 'Back', rooms_path %>

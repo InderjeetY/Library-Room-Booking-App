@@ -19,7 +19,10 @@
         <td><%= room.building %></td>
         <td><%= room.size %></td>
         <td><%= link_to 'Show', room %></td>
-        <td><%= link_to 'Schedule', 'room_schedule' %></td>
+        <td><%= form_tag controller: 'rooms', action: 'room_schedule', id: room.id do %>
+              <%= submit_tag 'Schedule' %>
+          <% end %></td>
+        <!--td><!--%= link_to 'Schedule', controller: 'rooms', action: 'room_schedule' %></td-->
         <td><%= link_to 'Edit', edit_room_path(room) %></td>
         <td><%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

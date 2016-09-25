@@ -9,4 +9,8 @@ class User < ApplicationRecord
   validates :email_id, :presence => true, :format => EMAIL_REGEX, :uniqueness => true
   validates :password, :presence => true
 
+  def get_user_bookings(room_id = '')
+    User.select('*').joins(:bookings).where('bookings.room_id = ?',room_id)
+  end
+
 end

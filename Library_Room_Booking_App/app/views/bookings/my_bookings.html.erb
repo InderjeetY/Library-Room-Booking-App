@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h1>My Bookings</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Room No</th>
+    <th>From time</th>
+    <th>To time</th>
+    <th colspan="2"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @user_bookings.each do |booking| %>
+      <tr>
+        <td><%= booking.room_no %></td>
+        <td><%= booking.from_time %></td>
+        <td><%= booking.to_time %></td>
+        <% if booking.from_time > Time.now.to_datetime %>
+          <td><%= link_to 'Edit', edit_booking_path(booking) %></td>
+          <td><%= link_to 'Destroy', booking.id.to_s, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Booking', new_booking_path %>
