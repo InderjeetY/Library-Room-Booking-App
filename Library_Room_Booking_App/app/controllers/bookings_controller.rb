@@ -4,39 +4,14 @@ class BookingsController < ApplicationController
   # GET /bookings
   # GET /bookings.json
 
-  "def search_room
-  end"
-
-  "def search_rooms
-    redirect_to '/rooms/find_rooms'
-  end"
-
   def search_room
   end
-
-  "def find_rooms
-    from_time = params[:Date].to_datetime + Time.parse(params[:from_hour_time].to_s + ':' + params[:from_minute_time].to_s).seconds_since_midnight.seconds
-    to_time = params[:Date].to_datetime + Time.parse(params[:to_hour_time].to_s + ':' + params[:to_minute_time].to_s).seconds_since_midnight.seconds
-    @rooms = Booking.get_rooms(params[:building], from_time, to_time)
-    if @rooms
-      session[:rooms_available_details] = @rooms
-      #respond_to do |format|
-        #format.html { redirect_to controller: 'bookings', action: 'rooms_available'}
-        #format.json { render :rooms_available, status: :ok, location: @booking }
-      #end
-      redirect_to controller: 'bookings', action: 'rooms_available'
-    else
-      respond_to do |format|
-        format.html { redirect_to '/rooms/search_rooms', notice: 'No rooms were available. Please search again.'}
-      end
-    end
-  end"
 
   def rooms_available
     #from_time = params[:Date].to_datetime + Time.parse(params[:from_hour_time].to_s + ':' + params[:from_minute_time].to_s).seconds_since_midnight.seconds
     #to_time = params[:Date].to_datetime + Time.parse(params[:to_hour_time].to_s + ':' + params[:to_minute_time].to_s).seconds_since_midnight.seconds
     t1 = params[:Date].to_datetime
-    t2 = Time.now.to_datetime
+    t2 = DateTime.current#Time.now.to_datetime
     from_time = DateTime.new(t1.year,t1.month,t1.day, params[:from_hour_time].to_i, params[:from_minute_time].to_i, 0, t2.zone)
     to_time = DateTime.new(t1.year,t1.month,t1.day, params[:to_hour_time].to_i, params[:to_minute_time].to_i, 0, t2.zone)
     @rooms = Booking.get_rooms(params[:building], from_time, to_time)
@@ -44,22 +19,17 @@ class BookingsController < ApplicationController
       session[:from_time] = from_time
       session[:to_time] = to_time
     else
-        redirect_to '/admin/index', notice: 'Rooms were not available for your search'
+      if Time.now.to_datetime >= from_time
+        redirect_to '/admin/index', notice: 'Rooms were not available for your search. from time < present time' + from_time.to_s + ', ' + Time.now.to_datetime.to_s
+      elsif from_time >= to_time
+        redirect_to '/admin/index', notice: 'Rooms were not available for your search. from > to'
+      elsif (to_time - from_time)*24 > 2
+        redirect_to '/admin/index', notice: 'Rooms were not available for your search. more than two days, ' + from_time.to_s + ',' + to_time.to_s + ', ' + Time.now.to_datetime.to_s + (to_time - from_time).to_s
+      elsif (to_time - Time.now.to_datetime)*24  > 14
+        redirect_to '/admin/index', notice: 'Rooms were not available for your search. more than a week, ' + from_time.to_s + ',' + to_time.to_s + ', ' + Time.now.to_datetime.to_s + ', ' + (to_time - Time.now.to_datetime).to_s + ', ' + + (to_time - from_time).to_s
+      end
     end
   end
-
-  "def book_room
-    from_time = session[:from_time]
-    to_time = session[:to_time]
-    session[:from_time] = 'nil'
-    session[:to_time] = 'nil'
-    user = User.find_by(email_id: session[:email_id])
-    #room_id = params[:id]
-    @new_booking = Booking.new(:from_time => from_time, :to_time => to_time, :user_id => user.id, :room_id => params[:id])
-    @new_booking.save
-    @new_booking = Booking.new
-    #Rails.logger.info(@new_booking.errors.inspect)
-  #end"
 
   def my_bookings
     if params[:id]
