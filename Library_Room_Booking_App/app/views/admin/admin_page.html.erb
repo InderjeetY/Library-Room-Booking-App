@@ -36,6 +36,10 @@
     <%= submit_tag 'Find and Book a Room' %>
 <% end %>
 
+<%= form_tag controller: 'bookings' ,action: 'search_room_for_member' do %>
+    <%= submit_tag 'Find and Book a Room for member' %>
+<% end %>
+
 <%= form_tag controller: 'bookings' ,action: 'my_bookings' do %>
     <%= submit_tag 'My Bookings' %>
 <% end %>

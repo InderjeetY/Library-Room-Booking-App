@@ -17,6 +17,9 @@ class BookingsController < ApplicationController
     end
   end
 
+  def search_room_for_member
+  end
+
   def rooms_available
     t1 = params[:Date].to_datetime
     t2 = DateTime.now
@@ -24,6 +27,11 @@ class BookingsController < ApplicationController
     to_time = DateTime.new(t1.year,t1.month,t1.day, params[:to_hour_time].to_i, params[:to_minute_time].to_i, 0, t2.zone)
     @rooms = Booking.get_rooms(params[:building], from_time, to_time)
     if @rooms
+      if params[:form_id] == '1'
+        session[:_user_email_id] = params[:user_id]
+      else
+        session[:_user_email_id] = session[:email_id]
+      end
       session[:from_time] = from_time
       session[:to_time] = to_time
     else
@@ -94,7 +102,8 @@ class BookingsController < ApplicationController
     @to_time = session[:to_time]
     session[:from_time] = 'nil'
     session[:to_time] = 'nil'
-    @user = User.find_by(email_id: session[:email_id])
+    @user = User.find_by(email_id: session[:_user_email_id])
+    #session[:_user_email_id] = 'nil'
     @room_id = params[:id]
     @booking = Booking.new
     @booking_id = @booking.id

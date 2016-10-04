@@ -38,6 +38,7 @@ Rails.application.routes.draw do
 
   post 'bookings/search_room'
   post 'bookings/search_rooms'
+  post 'bookings/search_room_for_member'
   #post 'bookings/book_room'
   get  'bookings/book_room'
   post 'bookings/find_rooms'

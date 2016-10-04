@@ -1,4 +1,12 @@
-<%= form_tag action: 'rooms_available', id: 0 do %>
+<%= form_tag action: 'rooms_available', form_id: 1 do %>
+
+    <div class="field">
+      <%= label_tag 'Select User:'%>
+      <% user_array = User.where(user_type: 'member').map { |user| [user.email_id, user.email_id] } %>
+      <!--%= collection_select :user_id, User.where(user_type: 'member'), :id, :email_id, :prompt => 'Select' %-->
+      <%= select_tag :user_id, options_for_select(user_array) %>
+    </div>
+
     <div class="field">
       <%= label_tag 'Select Building:'%>
       <%= select_tag :building, options_for_select([['D.H. Hill','D.H. Hill'],['James B. Hunt','James B. Hunt']]) %>
