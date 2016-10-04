@@ -11,31 +11,25 @@
     <%= @booking.room_id %>
     <br> <br>
 
-    <br>
-    <%= @booking.from_time %> <br>
-    <%= @booking.from_time.to_date %> <br>
-    <%= @booking.from_time.strftime('%I').to_i %> <br>
-    <br>
-
     <div class="field">
       <%= label_tag 'Date' %>
-      <%= date_field_tag :Date, @booking.from_time.to_date %>
+      <%= date_field_tag :Date, @from_time.to_date %>
     </div>
 
     <div class="field">
       <%= label_tag :from_time %>
-      <%= select_tag :from_hour_time, options_for_select((0..23).map {|i| [i,i] }, @booking.from_time.strftime('%H').to_i) %>
-      <%= select_tag :from_minute_time, options_for_select([[0,'00'],[30,'30']], @booking.from_time.strftime('%M').to_i) %>
+      <%= select_tag :from_hour_time, options_for_select((0..23).map {|i| [i,i] }, @from_time.strftime('%H').to_i) %>
+      <%= select_tag :from_minute_time, options_for_select([[0,'00'],[30,'30']], @from_time.strftime('%M').to_i) %>
     </div>
 
     <div class="field">
       <%= label_tag :to_time %>
-      <%= select_tag :to_hour_time, options_for_select((0..23).map {|i| [i,i] }, @booking.to_time.strftime('%H').to_i) %>
-      <%= select_tag :to_minute_time, options_for_select([[0,'00'],[30,'30']], @booking.to_time.strftime('%M').to_i) %>
+      <%= select_tag :to_hour_time, options_for_select((0..23).map {|i| [i,i] }, @to_time.strftime('%H').to_i) %>
+      <%= select_tag :to_minute_time, options_for_select([[0,'00'],[30,'30']], @to_time.strftime('%M').to_i) %>
     </div>
 
     <div class="actions">
-      <%= submit_tag 'Edit Booking' %>
+      <%= submit_tag 'Update Booking' %>
     </div>
 <% end %>
 

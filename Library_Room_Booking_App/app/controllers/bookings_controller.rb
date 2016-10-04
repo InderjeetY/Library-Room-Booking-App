@@ -50,6 +50,8 @@ class BookingsController < ApplicationController
   def edit_booking
     @booking = Booking.find(params[:id])
     @room = Room.find(@booking.room_id)
+    @from_time = @booking.from_time.in_time_zone("Eastern Time (US & Canada)")
+    @to_time = @booking.to_time.in_time_zone("Eastern Time (US & Canada)")
   end
 
   def update_booking
@@ -58,12 +60,22 @@ class BookingsController < ApplicationController
     from_time = DateTime.new(t1.year,t1.month,t1.day, params[:from_hour_time].to_i, params[:from_minute_time].to_i, 0, t2.zone)
     to_time = DateTime.new(t1.year,t1.month,t1.day, params[:to_hour_time].to_i, params[:to_minute_time].to_i, 0, t2.zone)
     @booking = Booking.find(params[:id])
-    @rooms = Booking.check_room(@booking.room_id, from_time, to_time)
-    if @rooms
+    @rooms = Booking.check_room(@booking.id, @booking.room_id, from_time, to_time)
+    if @rooms == 0
       Booking.where(id: params[:id]).update_all(from_time: from_time, to_time: to_time)
       redirect_to '/admin/index', notice: 'Booking updated'
+    elsif @rooms == 2
+      if DateTime.now >= from_time
+        redirect_to '/admin/index', notice: 'Booking not updated since start time was before current time'# + ', ' + DateTime.now.to_s + ', ' + from_time.to_s
+      elsif from_time >= to_time
+        redirect_to '/admin/index', notice: 'Booking not updated since start time was after end time'# + ', ' + to_time.to_s + ', ' + from_time.to_s
+      elsif(to_time - from_time)*24 > 2
+        redirect_to '/admin/index', notice: 'Booking not updated since booking is only allowed for 2 hours maximum'# + ', ' + to_time.to_s + ', ' + from_time.to_s + ', ' +(to_time - from_time).to_s
+      elsif (to_time - DateTime.now)  > 14
+        redirect_to '/admin/index', notice: 'Booking not updated as it goes beyond a week'# + ', ' + DateTime.now.to_s + ', ' + from_time.to_s + ', ' + (to_time - DateTime.now).to_s
+      end
     else
-        redirect_to '/admin/index', notice: 'Booking not updated'
+      redirect_to '/admin/index', notice: 'Booking not updated as room not available in that time or you did not change the timing'# + ', ' + to_time.to_s + ', ' + from_time.to_s + ', ' + @rooms.to_s
     end
   end
 
