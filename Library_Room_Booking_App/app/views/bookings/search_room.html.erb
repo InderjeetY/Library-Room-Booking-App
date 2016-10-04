@@ -6,7 +6,7 @@
 
     <div class="field">
       <%= label_tag 'Date' %>
-      <%= date_field_tag :Date, Date.today %>
+      <%= date_field_tag :Date, DateTime.now.to_date %>
     </div>
 
     <div class="field">

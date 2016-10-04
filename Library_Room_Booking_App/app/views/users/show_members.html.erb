@@ -19,6 +19,12 @@
         <td><%= member.email_id %></td>
         <td><%= member.user_type %></td>
         <td><%= link_to 'Booking History', {:controller => 'bookings', :action => 'my_bookings', :id => member.id}%></td>
+        <% if member.booking_count == 0%>
+          <td><%= link_to 'Give Multiple Booking Right', {:controller => 'users', :action => 'allow_multiple_bookings', :id => member.id}%></td>
+        <% end %>
+        <% if member.booking_count == 1%>
+            <td><%= link_to 'Remove Multiple Booking Right', {:controller => 'users', :action => 'remove_multiple_bookings', :id => member.id}%></td>
+        <% end %>
         <td><%=  link_to 'Destroy', member, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
   <% end %>

@@ -2,12 +2,18 @@
 
 <p id="notice"><%= notice %></p>
 
-<%= form_tag action: 'edit_user_details' do %>
+<% if 'sadmin' != session[:user_type] %>
+  <%= form_tag action: 'edit_user_details' do %>
     <%= submit_tag 'Update Details' %>
+  <% end %>
 <% end %>
 
 <%= form_tag controller: 'users', action: 'sign_up_admin' do %>
     <%= submit_tag 'Add new admin' %>
+<% end %>
+
+<%= form_tag controller: 'users', action: 'sign_up_member' do %>
+    <%= submit_tag 'Add new member' %>
 <% end %>
 
 <%= form_tag controller: 'users', action: 'show_admins' do %>

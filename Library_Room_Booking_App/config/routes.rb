@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   get 'sessions/destroy'
 
-  resources :users
+  resources :users, :only => [:index,	:new, :create, :edit, :update, :destroy]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root :to => 'admin#index'
   #get 'sessions/destroy'
@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   post 'users/show_admins'
   post 'users/show_members'
   post 'users/Destroy'
+  get 'users/allow_multiple_bookings' => 'users#allow_multiple_bookings'
+  get 'users/remove_multiple_bookings' => 'users#remove_multiple_bookings'
   post 'admin/sign_out'
   post 'admin/edit_user_details'
   get 'admin/member_page'
@@ -41,6 +43,8 @@ Rails.application.routes.draw do
   post 'bookings/find_rooms'
   post 'bookings/my_bookings'
   get 'bookings/my_bookings'
+  get 'bookings/edit_booking'
+  post 'bookings/update_booking'
   #get 'bookings/rooms_available'
   post 'bookings/rooms_available'
   delete 'bookings/destroy' => 'bookings#destroy'

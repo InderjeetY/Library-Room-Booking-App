@@ -5,13 +5,21 @@ class BookingsController < ApplicationController
   # GET /bookings.json
 
   def search_room
+    user_details = User.find_by(email_id: session[:email_id])
+    if Booking.find_any_bookings(user_details.id)
+      if user_details.booking_count == 0
+        redirect_to '/admin/index', notice: 'You are not allowed to book more rooms'# + ', ' + user_details.booking_count.to_s + ', ' + Booking.where('user_id = ? and to_time > ?', user_details.id, DateTime.now).length.to_s
+      #else
+      #  redirect_to '/admin/index', notice: 'You should not have been allowed to book more rooms' + ', ' + user_details.booking_count.to_s + ', ' + Booking.find_any_bookings(user_details.id).to_s
+      end
+    #else
+    #  redirect_to '/admin/index', notice: 'You should be allowed to book more rooms' + ', ' + user_details.booking_count.to_s + ', ' + Booking.find_any_bookings(user_details.id).to_s
+    end
   end
 
   def rooms_available
-    #from_time = params[:Date].to_datetime + Time.parse(params[:from_hour_time].to_s + ':' + params[:from_minute_time].to_s).seconds_since_midnight.seconds
-    #to_time = params[:Date].to_datetime + Time.parse(params[:to_hour_time].to_s + ':' + params[:to_minute_time].to_s).seconds_since_midnight.seconds
     t1 = params[:Date].to_datetime
-    t2 = DateTime.current#Time.now.to_datetime
+    t2 = DateTime.now
     from_time = DateTime.new(t1.year,t1.month,t1.day, params[:from_hour_time].to_i, params[:from_minute_time].to_i, 0, t2.zone)
     to_time = DateTime.new(t1.year,t1.month,t1.day, params[:to_hour_time].to_i, params[:to_minute_time].to_i, 0, t2.zone)
     @rooms = Booking.get_rooms(params[:building], from_time, to_time)
@@ -19,14 +27,14 @@ class BookingsController < ApplicationController
       session[:from_time] = from_time
       session[:to_time] = to_time
     else
-      if Time.now.to_datetime >= from_time
-        redirect_to '/admin/index', notice: 'Rooms were not available for your search. from time < present time' + from_time.to_s + ', ' + Time.now.to_datetime.to_s
+      if DateTime.now >= from_time
+        redirect_to '/admin/index', notice: 'Rooms were not available for your search since start time was before current time'# + ', ' + DateTime.now.to_s + ', ' + from_time.to_s
       elsif from_time >= to_time
-        redirect_to '/admin/index', notice: 'Rooms were not available for your search. from > to'
-      elsif (to_time - from_time)*24 > 2
-        redirect_to '/admin/index', notice: 'Rooms were not available for your search. more than two days, ' + from_time.to_s + ',' + to_time.to_s + ', ' + Time.now.to_datetime.to_s + (to_time - from_time).to_s
-      elsif (to_time - Time.now.to_datetime)*24  > 14
-        redirect_to '/admin/index', notice: 'Rooms were not available for your search. more than a week, ' + from_time.to_s + ',' + to_time.to_s + ', ' + Time.now.to_datetime.to_s + ', ' + (to_time - Time.now.to_datetime).to_s + ', ' + + (to_time - from_time).to_s
+        redirect_to '/admin/index', notice: 'Rooms were not available for your search since start time was after end time'# + ', ' + to_time.to_s + ', ' + from_time.to_s
+      elsif(to_time - from_time)*24 > 2
+        redirect_to '/admin/index', notice: 'Rooms were not available for your search since booking is only allowed for 2 hours maximum'# + ', ' + to_time.to_s + ', ' + from_time.to_s + ', ' +(to_time - from_time).to_s
+      elsif (to_time - DateTime.now)  > 14
+        redirect_to '/admin/index', notice: 'Rooms can only be searched within next week'# + ', ' + DateTime.now.to_s + ', ' + from_time.to_s + ', ' + (to_time - DateTime.now).to_s
       end
     end
   end
@@ -36,6 +44,26 @@ class BookingsController < ApplicationController
       @user_bookings = Room.select('*').joins(:bookings).where('bookings.user_id = ?',User.find(params[:id]))
     else
       @user_bookings = Room.select('*').joins(:bookings).where('bookings.user_id = ?',User.find_by(email_id: session[:email_id]).id)
+    end
+  end
+
+  def edit_booking
+    @booking = Booking.find(params[:id])
+    @room = Room.find(@booking.room_id)
+  end
+
+  def update_booking
+    t1 = params[:Date].to_datetime
+    t2 = DateTime.now
+    from_time = DateTime.new(t1.year,t1.month,t1.day, params[:from_hour_time].to_i, params[:from_minute_time].to_i, 0, t2.zone)
+    to_time = DateTime.new(t1.year,t1.month,t1.day, params[:to_hour_time].to_i, params[:to_minute_time].to_i, 0, t2.zone)
+    @booking = Booking.find(params[:id])
+    @rooms = Booking.check_room(@booking.room_id, from_time, to_time)
+    if @rooms
+      Booking.where(id: params[:id]).update_all(from_time: from_time, to_time: to_time)
+      redirect_to '/admin/index', notice: 'Booking updated'
+    else
+        redirect_to '/admin/index', notice: 'Booking not updated'
     end
   end
 
@@ -90,8 +118,11 @@ class BookingsController < ApplicationController
   # PATCH/PUT /bookings/1.json
   def update
     respond_to do |format|
+      #if Booking.valid_params(params[:from_time], params[:to_time], params[:room_id])
+      #  redirect_to '/admin/index', notice: 'Timings not valid, hence booking not updated'
+      #end
       if @booking.update(booking_params)
-        format.html { redirect_to '/admin/index', notice: 'Booking was successfully updated.' }
+        format.html { redirect_to '/admin/index', notice: 'Booking was successfully updated.' + @booking.to_time.to_s + ', ' + @booking.from_time.to_s + ', ' + (@booking.to_time-@booking.from_time).to_s}
         format.json { render :show, status: :ok, location: @booking }
       else
         format.html { render :edit }
@@ -105,7 +136,7 @@ class BookingsController < ApplicationController
   def destroy
     @booking.destroy
     respond_to do |format|
-      format.html { redirect_to '/admins/index', notice: 'Booking was successfully destroyed.' }
+      format.html { redirect_to '/admin/index', notice: 'Booking was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

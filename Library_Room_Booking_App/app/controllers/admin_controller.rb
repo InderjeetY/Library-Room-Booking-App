@@ -32,15 +32,6 @@ class AdminController < ApplicationController
     redirect_to '/bookings/search_rooms'
   end
 
-  "def admin_new
-    #render controller: 'users', action: 'sign_up_admin'
-    redirect_to '/users/sign_up_admin'
-  end
-
-  def show_all_admin
-    redirect_to '/users/show_admins'
-  end"
-
   def show_my_bookings
     redirect_to '/bookings/my_bookings'
   end

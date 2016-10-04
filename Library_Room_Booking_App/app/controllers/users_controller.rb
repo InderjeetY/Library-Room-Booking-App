@@ -32,6 +32,26 @@ class UsersController < ApplicationController
     redirect_to '/users/new'
   end
 
+  def allow_multiple_bookings
+    #@user_details = User.find_by(id: params[:id])
+    #if @user_details.update(booking_count: 1)
+    if User.where(id: params[:id]).update_all(booking_count: 1)
+      redirect_to '/admin/index', notice: 'Multiple bookings rights given.'
+    else
+      redirect_to '/admin/index', notice: 'Multiple bookings rights not given.'
+    end
+  end
+
+  def remove_multiple_bookings
+    #@user_details = User.find_by(id: params[:id])
+    #if @user_details.update(booking_count: 0)
+    if User.where(id: params[:id]).update_all(booking_count: 0)
+      redirect_to '/admin/index', notice: 'Multiple bookings rights removed.'
+    else
+      redirect_to '/admin/index', notice: 'Multiple bookings rights not removed.'
+    end
+  end
+
   # GET /users/new
   def new
     @user = User.new
@@ -49,9 +69,14 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     @user.user_type = session[:user_type_]
+    if @user.user_type == 'admin'
+      @user.booking_count = 1
+    elsif @user.user_type == 'member'
+      @user.booking_count = 0
+    end
     respond_to do |format|
       if @user.save
-        if  @user.user_type == 'admin'
+        if  session[:user_type] == 'admin' || session[:user_type] == 'sadmin'
           format.html { redirect_to '/admin/index', notice: 'User was successfully created.' }
           format.json { render :show, status: :created, location: @user }
         else
@@ -102,6 +127,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email_id, :password, :password_confirmation, :user_type)
+      params.require(:user).permit(:name, :email_id, :password, :password_confirmation, :user_type, :booking_count)
     end
 end
