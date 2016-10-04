@@ -27,7 +27,7 @@ To logout, User needs to log in and click on 'logout', user is logged out and si
 Functionalities of a Library member:
 
     - Book a Room: user should log in as a library member click on 'book a room', enter required details and click 'Select Room'.
-    - View Bookings: user needs to log in and click on 'My Bookings', al previous bookings are displayed.
+    - View Bookings: user needs to log in and click on 'My Bookings', all previous bookings are displayed.
     - Update Details: User needs to log in, click on 'Update details', enter the new details and click on 'Update User'.
 
 Functionalities of Admin:
