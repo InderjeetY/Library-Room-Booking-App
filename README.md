@@ -42,6 +42,7 @@ Functionalities of Admin:
     - Show all Rooms: After log in, click on 'Show all Rooms', all existing rooms are displayed.
     - Delete Room: After log in, click on 'Show all Rooms', all existing Rooms are displayed, click on 'destroy' for a specific Room.
     - Find and Book a Room: After log in, click on 'Find and Book a Room', enter room details and click on 'Select Room'.
+    - Find and Book a Room for member: After log in , click on 'Find and book a room for member', select the member and enter the details for bookings.
     - View Bookings: After log in, click on 'My Bookings', all previous booking details are displayed.
     
 Functionalities of Super Admin:
