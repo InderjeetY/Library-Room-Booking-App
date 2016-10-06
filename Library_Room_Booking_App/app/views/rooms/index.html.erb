@@ -18,7 +18,6 @@
         <td><%= room.room_no %></td>
         <td><%= room.building %></td>
         <td><%= room.size %></td>
-        <td><%= link_to 'Show', room %></td>
         <td><%= form_tag controller: 'rooms', action: 'room_schedule', id: room.id do %>
               <%= submit_tag 'Schedule' %>
           <% end %></td>
