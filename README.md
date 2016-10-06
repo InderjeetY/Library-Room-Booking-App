@@ -42,6 +42,7 @@ Functionalities of Admin:
     - Show all Rooms: After log in, click on 'Show all Rooms', all existing rooms are displayed.
     - Delete Room: After log in, click on 'Show all Rooms', all existing Rooms are displayed, click on 'destroy' for a specific Room.
     - Find and Book a Room: After log in, click on 'Find and Book a Room', enter room details and click on 'Select Room'.
+    - Find and Book a Room for member: After log in , click on 'Find and book a room for member', select the member and enter the details for bookings.
     - View Bookings: After log in, click on 'My Bookings', all previous booking details are displayed.
     
 Functionalities of Super Admin:
@@ -50,7 +51,38 @@ Functionalities of Super Admin:
     
 Note: While updating Email Adress, if the new email address already exits in database, the user will be logged out but he can again           log back in with the same credentials as before.
       
+Special test case A: The system should handle the scenario where an admin deletes a room that has a reservation. 
 
+       -Prerequisites: The room being deleted should have a reservation by a library member.
+       -Log in as an Admin.
+       -Click on 'Show all rooms'
+       -Click on the room which needs to be deleted.
+       -Click on 'Schedule' for that room.
+       -The resevation made by the library member in that room is displayed.
+       -Navigate back to the show rooms page.
+       -Click on 'Destroy' for that room
+       -Room will be deleted.
+       -Navigate back to the 'Welcome page'.
+       -Click on 'Show all Users'
+       -Click on 'Booking History' for the user who made the reservation in the room which you just deleted.
+       -The reservation made to that room should not be displayed.
+       
+Special test case B: The system should handle the scenario that admins delete library member who have currently reserved a room.
+
+       -Prerequisites: The library member being deleted should have made a reservation in a room.
+       -Log in as an Admin.
+       -Click on 'Show all members'
+       -Click on 'Booking History' for the user who will be deleted.
+       -Booking made by the user for the room to be deleted should be dislpayed.
+       -Navigate back to the show members page.
+       -Click on 'Destroy' for that member.
+       -Member will be deleted.
+       -Navigate back to the 'Welcome page'
+       -Click on 'Show all Rooms'
+       -Click on 'Schedule' for that room inwhich the deleted user made the reservation.
+       -The reservation made to that room by that user should not be displayed.
+       
+        
 Contributing
 
     - Fork it
