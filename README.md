@@ -82,6 +82,7 @@ Special test case B: The system should handle the scenario that admins delete li
        -Click on 'Schedule' for that room inwhich the deleted user made the reservation.
        -The reservation made to that room by that user should not be displayed.
        
+       
         
 Contributing
 
