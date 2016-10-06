@@ -79,7 +79,7 @@ Special test case B: The system should handle the scenario that admins delete li
        -Member will be deleted.
        -Navigate back to the 'Welcome page'
        -Click on 'Show all Rooms'
-       -Click on 'Schedule' for that room inwhich the deleted user made the reservation.
+       -Click on 'Schedule' for that room in which the deleted user made the reservation.
        -The reservation made to that room by that user should not be displayed.
        
        
