@@ -19,8 +19,8 @@
         <td><%= booking.from_time %></td>
         <td><%= booking.to_time %></td>
         <% if booking.from_time > Time.now.to_datetime %>
-            <td><%= link_to 'Edit', edit_booking_path(booking) %></td>
-            <td><%= link_to 'Destroy', booking.id.to_s, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to 'Edit', {:controller => 'bookings', :action => 'edit_booking', :id => booking.id} %></td>
+            <td><%= link_to 'Delete', {:controller => 'bookings', :action => 'destroy', :id => booking.id}, method: :delete %></td>
         <% end %>
       </tr>
   <% end %>
