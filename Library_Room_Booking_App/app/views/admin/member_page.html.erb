@@ -6,8 +6,16 @@
     <%= submit_tag 'Update Details' %>
 <% end %>
 
+<%= form_tag controller: 'bookings' ,action: 'search_for_rooms' do %>
+    <%= submit_tag 'Search Room' %>
+<% end %>
+
 <%= form_tag controller: 'bookings' ,action: 'search_room' do %>
     <%= submit_tag 'Book a Room' %>
+<% end %>
+
+<%= form_tag action: 'show_all_rooms' do %>
+    <%= submit_tag 'Show all rooms' %>
 <% end %>
 
 <%= form_tag controller: 'bookings' ,action: 'my_bookings' do %>

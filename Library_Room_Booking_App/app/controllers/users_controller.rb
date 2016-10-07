@@ -114,6 +114,7 @@ class UsersController < ApplicationController
     @user.destroy
     respond_to do |format|
       #if session[:user_type] == 'admin' || session[:user_type] == 'sadmin'
+      Booking.destroy_all(user_id: @user.id)
       format.html { redirect_to '/admin/index', notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
     end

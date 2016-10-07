@@ -5,19 +5,12 @@ class BookingsController < ApplicationController
   # GET /bookings.json
 
   def search_room
-    user_details = User.find_by(email_id: session[:email_id])
-    if Booking.find_any_bookings(user_details.id)
-      if user_details.booking_count == 0
-        redirect_to '/admin/index', notice: 'You are not allowed to book more rooms'# + ', ' + user_details.booking_count.to_s + ', ' + Booking.where('user_id = ? and to_time > ?', user_details.id, DateTime.now).length.to_s
-      #else
-      #  redirect_to '/admin/index', notice: 'You should not have been allowed to book more rooms' + ', ' + user_details.booking_count.to_s + ', ' + Booking.find_any_bookings(user_details.id).to_s
-      end
-    #else
-    #  redirect_to '/admin/index', notice: 'You should be allowed to book more rooms' + ', ' + user_details.booking_count.to_s + ', ' + Booking.find_any_bookings(user_details.id).to_s
-    end
   end
 
   def search_room_for_member
+  end
+
+  def search_for_rooms
   end
 
   def rooms_available
@@ -111,6 +104,13 @@ class BookingsController < ApplicationController
     @booking.to_time = @to_time
     @booking.user_id = @user.id
     @booking.room_id = @room_id
+    if Booking.rooms_at_time(@user.id, @from_time, @to_time)
+      if @user.booking_count == 0
+        redirect_to '/admin/index', notice: 'cannot book two rooms at a time' + ', ' + @from_time + ', ' + @to_time
+      else
+        redirect_to '/admin/index', notice: 'cannot book two rooms at a time'
+      end
+    end
   end
 
   # GET /bookings/1/edit

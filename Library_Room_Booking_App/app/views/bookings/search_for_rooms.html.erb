@@ -1,0 +1,22 @@
+<%= form_tag controller: 'rooms', action: 'index_searched_rooms' do %>
+    <div class="field">
+      <%= label_tag 'Select Building:'%>
+      <%= select_tag :building, options_for_select([['Any', ''],['D.H. Hill','D.H. Hill'],['James B. Hunt','James B. Hunt']]) %>
+    </div>
+
+    <div class="field">
+      <%= label_tag 'Room No' %>
+      <%= text_field_tag :room_no %>
+    </div>
+
+    <div class="field">
+      <%= label_tag 'Room Size' %>
+      <%= select_tag :room_size, options_for_select([['Any', ''],['Small - 4 chairs',4],['Medium - 6 chairs',6],['Large - 12 chairs',12]]) %>
+    </div>
+
+    <div class="actions">
+      <%= submit_tag 'Search Room' %>
+    </div>
+<% end %>
+
+<%= link_to 'Home', '/admin/index' %>

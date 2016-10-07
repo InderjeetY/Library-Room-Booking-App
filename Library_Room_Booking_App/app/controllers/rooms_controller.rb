@@ -7,12 +7,12 @@ class RoomsController < ApplicationController
     @rooms = Room.all
   end
 
+  def index_searched_rooms
+    @rooms = Room.find_room_details(params[:building], params[:room_no], params[:room_size])
+  end
+
   def room_schedule
     @room_detail = Room.find(params[:id])
-    #@booking_detail = Booking.where(room_id: params[:id])
-    #@booking_detail = Booking.all(:conditions => ["room_id = ?", params[:id]])
-    #@booking_detail = get_user_bookings(params[:id])
-    #@booking_detail = Room.get_all_booking_room(params[:id])
     @booking_detail = User.select('*').joins(:bookings).where('bookings.room_id = ?',params[:id])
   end
 
