@@ -14,11 +14,15 @@ class BookingsController < ApplicationController
   end
 
   def rooms_available
+
     t1 = params[:Date].to_datetime
     t2 = DateTime.now
     from_time = DateTime.new(t1.year,t1.month,t1.day, params[:from_hour_time].to_i, params[:from_minute_time].to_i, 0, t2.zone)
     to_time = DateTime.new(t1.year,t1.month,t1.day, params[:to_hour_time].to_i, params[:to_minute_time].to_i, 0, t2.zone)
     @rooms = Booking.get_rooms(params[:building], from_time, to_time)
+    if User.check_email_ids(params[:notification_email_id])
+      redirect_to '/admin/index', notice: 'Email provided not correct.'
+    end
     if @rooms
       if params[:form_id] == '1'
         session[:_user_email_id] = params[:user_id]
@@ -27,6 +31,7 @@ class BookingsController < ApplicationController
       end
       session[:from_time] = from_time
       session[:to_time] = to_time
+      session[:notification_email_id] = params[:notification_email_id]
     else
       if DateTime.now >= from_time
         redirect_to '/admin/index', notice: 'Rooms were not available for your search since start time was before current time'# + ', ' + DateTime.now.to_s + ', ' + from_time.to_s
@@ -106,9 +111,7 @@ class BookingsController < ApplicationController
     @booking.room_id = @room_id
     if Booking.rooms_at_time(@user.id, @from_time, @to_time)
       if @user.booking_count == 0
-        redirect_to '/admin/index', notice: 'cannot book two rooms at a time' + ', ' + @from_time + ', ' + @to_time
-      else
-        redirect_to '/admin/index', notice: 'cannot book two rooms at a time'
+        redirect_to 'admin/index', notice: 'Cannot book two rooms at same time'
       end
     end
   end
@@ -125,6 +128,7 @@ class BookingsController < ApplicationController
     Rails.logger.info(@booking.errors.inspect)
     respond_to do |format|
       if @booking.save!
+        UserMailer.mailing_details(@booking.id,session[:notification_email_id]).deliver_now
         @booking.errors.full_messages
         format.html { redirect_to '/admin/index', notice: 'Booking was successfully created.' }
         format.json { render :show, status: :created, location: @booking }

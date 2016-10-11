@@ -13,4 +13,16 @@ class User < ApplicationRecord
     User.select('*').joins(:bookings).where('bookings.room_id = ?',room_id)
   end
 
+  def self.check_email_ids(email)
+    @mailids = email.split(';')
+    @mailids.each do |user_email|
+      user_email_id = user_email.strip
+      if User.find_by(email_id: user_email_id)
+      else
+        return TRUE
+      end
+    end
+    FALSE
+  end
+
 end

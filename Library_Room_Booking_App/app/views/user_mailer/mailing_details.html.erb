@@ -1,0 +1,6 @@
+<p>Hi, </p>
+<p>Room successfully reserved.</p>
+<p>Room/Slot Details: </p>
+<p>Room No. <%= @room.room_no %> in <%= @room.building %> Library is reserved on behalf of <%= @user.name %>.</p>
+<p>Room Booked from <%= @booking.from_time.in_time_zone('Eastern Time (US & Canada)') %> to <%= @booking.to_time.in_time_zone('Eastern Time (US & Canada)') %>.
+</p>

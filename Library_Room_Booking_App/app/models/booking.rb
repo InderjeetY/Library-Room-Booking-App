@@ -3,20 +3,6 @@ class Booking < ApplicationRecord
   belongs_to :room, optional: true
 
   validates :to_time, :from_time, :presence => true
-  validate :validate_time
-
-  def validate_time
-    if DateTime.now < self.from_time && self.from_time < self.to_time && (self.to_time - self.from_time)*24 <= 2 && (self.to_time - DateTime.now)  <= 14
-      rooms_not_available = Booking.where('room_id = ? and (bookings.from_time <= ? and ? < bookings.to_time) or (bookings.from_time < ? and ? <= bookings.to_time)', self.room_id, self.from_time, self.from_time, self.to_time, self.to_time)
-      if rooms_not_available
-        FALSE
-      else
-        TRUE
-      end
-    else
-      FALSE
-    end
-  end
 
   def self.get_rooms(building = '', from_time = '', to_time = '')
     if DateTime.now < from_time && from_time < to_time && (to_time - from_time)*24 <= 2 && (to_time - DateTime.now)  <= 14#validate_time(from_time,to_time) DateTime.current.to_datetime < from_time && from_time < to_time && (to_time - from_time)*24 <= 2 && (to_time - DateTime.current.to_datetime)  <= 14#validate_time(from_time,to_time)
@@ -29,7 +15,7 @@ class Booking < ApplicationRecord
 
   def self.rooms_at_time(user_id = '', from_time ='', to_time ='')
     rooms_booked = Booking.where('user_id = ? and ((bookings.from_time <= ? and ? < bookings.to_time) or (bookings.from_time < ? and ? <= bookings.to_time))', user_id, from_time, from_time, to_time, to_time)
-    if rooms_booked.length == 0
+    if rooms_booked.size == 0
       FALSE
     else
       TRUE
@@ -69,6 +55,7 @@ class Booking < ApplicationRecord
       else
         return FALSE
       end
+      #return Room.select('*').joins(:bookings).where('bookings.room_id = room.id and room.building = ?', building)
     else
       return TRUE
     end

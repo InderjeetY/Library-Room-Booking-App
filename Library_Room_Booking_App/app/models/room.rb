@@ -9,8 +9,13 @@ class Room < ApplicationRecord
     return Booking.joins('INNER JOIN `users` ON `bookings`.`user_id` = `users`.`id`').joins('INNER JOIN `rooms` ON `rooms`.`id` = ', room_id)
   end
 
-  def self.find_room_details(building = '', room_no = '', room_size = '')
-    return Room.where('room_no LIKE ? and building LIKE? and size LIKE?', '%' + room_no.to_s +  '%', '%' + building.to_s + '%', '%' + room_size.to_s + '%')
+  def self.find_room_details(building ='', room_no ='', room_size ='')
+    if room_size.to_s == ''
+      return Room.where('room_no LIKE ? and building LIKE ?', '%' + room_no.to_s + '%', '%' + building.to_s + '%')
+
+    else
+      return Room.where('room_no LIKE ? and building LIKE ? and size = ?', '%' + room_no.to_s + '%', '%' + building.to_s + '%',room_size)
+    end
   end
 
 end

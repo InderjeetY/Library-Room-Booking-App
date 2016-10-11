@@ -46,10 +46,10 @@ Rails.application.routes.draw do
   get 'bookings/my_bookings'
   get 'bookings/edit_booking'
   post 'bookings/update_booking'
-  post 'bookings/search_for_rooms'
   #get 'bookings/rooms_available'
   post 'bookings/rooms_available'
   delete 'bookings/destroy' => 'bookings#destroy'
+  post 'bookings/search_for_rooms'
 
   post 'rooms/index_searched_rooms'
 

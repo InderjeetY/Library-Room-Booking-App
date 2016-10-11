@@ -4,16 +4,16 @@
 
 <table>
   <thead>
-  <tr>
-    <th>Room no</th>
-    <th>Building</th>
-    <th>Size</th>
-    <th colspan="3"></th>
-  </tr>
+    <tr>
+      <th>Room no</th>
+      <th>Building</th>
+      <th>Size</th>
+      <th colspan="3"></th>
+    </tr>
   </thead>
 
   <tbody>
-  <% @rooms.each do |room| %>
+    <% @rooms.each do |room| %>
       <tr>
         <td><%= room.room_no %></td>
         <td><%= room.building %></td>
@@ -21,13 +21,12 @@
         <td><%= form_tag controller: 'rooms', action: 'room_schedule', id: room.id do %>
               <%= submit_tag 'Schedule' %>
           <% end %></td>
-        <!--td><!--%= link_to 'Schedule', controller: 'rooms', action: 'room_schedule' %></td-->
-        <% if session[:user_type] != 'member'%>
-            <td><%= link_to 'Edit', edit_room_path(room) %></td>
-            <td><%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
+        <% if session[:user_type] != 'member' %>
+          <td><%= link_to 'Edit', edit_room_path(room) %></td>
+          <td><%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%end %>
       </tr>
-  <% end %>
+    <% end %>
   </tbody>
 </table>
 

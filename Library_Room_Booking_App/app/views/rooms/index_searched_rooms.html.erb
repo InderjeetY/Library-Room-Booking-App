@@ -21,11 +21,10 @@
         <td><%= form_tag controller: 'rooms', action: 'room_schedule', id: room.id do %>
               <%= submit_tag 'Schedule' %>
           <% end %></td>
-        <!--td><!--%= link_to 'Schedule', controller: 'rooms', action: 'room_schedule' %></td-->
-        <% if session[:user_type] != 'member'%>
+        <% if session[:user_type] != 'member' %>
             <td><%= link_to 'Edit', edit_room_path(room) %></td>
             <td><%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
+        <%end %>
       </tr>
   <% end %>
   </tbody>

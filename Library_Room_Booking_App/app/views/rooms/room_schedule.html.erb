@@ -18,7 +18,7 @@
         <td><%= booking.name %></td>
         <td><%= booking.from_time %></td>
         <td><%= booking.to_time %></td>
-        <% if booking.from_time > Time.now.to_datetime and session[:user_type] != 'member'%>
+        <% if booking.from_time > Time.now.to_datetime and session[:user_type] != 'member' %>
             <td><%= link_to 'Edit', {:controller => 'bookings', :action => 'edit_booking', :id => booking.id} %></td>
             <td><%= link_to 'Delete', {:controller => 'bookings', :action => 'destroy', :id => booking.id}, method: :delete %></td>
         <% end %>
