@@ -24,6 +24,12 @@ Creating a Library Member:
 To login, User needs to log onto portal and enter valid login credentials then click on 'Login'.
 To logout, User needs to log in and click on 'logout', user is logged out and sign in page is displayed.
 
+Extra credit feature: 
+
+A: User enter the mail address of the other library members to notify for bookingand books the room. Entered valid library members mail address are successfully sent to users.
+B:  A library member can reserve only one room at a particular date and time. Only after his/her reservation is released, can he/she proceed to reserve another room. But an admin can allow a library member to reserve multiple rooms at one time.
+
+
 Functionalities of a Library member:
 
     - Book a Room: user should log in as a library member click on 'book a room', enter required details and click 'Select Room'.
